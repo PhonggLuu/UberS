@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Authentication", "Api.Authentication\Api.Authentication.csproj", "{33D57E47-4AE4-4414-8321-83ABC8B4901A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UberSystem.Domain", "UberSystem.Domain\UberSystem.Domain.csproj", "{27F9161F-E224-4FCA-A43E-1B34E123A275}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UberSystem.Infrastructure", "UberSystem.Infrastructure\UberSystem.Infrastructure.csproj", "{AB0872A5-1DF0-4DDD-8839-72F8570417E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UberSystem.Service", "UberSystem.Service\UberSystem.Service.csproj", "{8B429D63-C011-43F3-8AD6-80C60F7E00C8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UberSystem.Dto", "UberSystem.Dto\UberSystem.Dto.csproj", "{6A77C098-59F1-4459-B884-93FD1262A458}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UberSystem.Api.Customer", "UberSystem.Api.Customer\UberSystem.Api.Customer.csproj", "{52B972BA-5C50-4609-9CC8-B327BB98CBA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UberSystem.Api.Driver", "UberSystem.Api.Driver\UberSystem.Api.Driver.csproj", "{E1A44894-9FFB-4487-AC7C-1DB3DF6CEB18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33D57E47-4AE4-4414-8321-83ABC8B4901A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33D57E47-4AE4-4414-8321-83ABC8B4901A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33D57E47-4AE4-4414-8321-83ABC8B4901A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33D57E47-4AE4-4414-8321-83ABC8B4901A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27F9161F-E224-4FCA-A43E-1B34E123A275}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27F9161F-E224-4FCA-A43E-1B34E123A275}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27F9161F-E224-4FCA-A43E-1B34E123A275}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27F9161F-E224-4FCA-A43E-1B34E123A275}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB0872A5-1DF0-4DDD-8839-72F8570417E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB0872A5-1DF0-4DDD-8839-72F8570417E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB0872A5-1DF0-4DDD-8839-72F8570417E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB0872A5-1DF0-4DDD-8839-72F8570417E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B429D63-C011-43F3-8AD6-80C60F7E00C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B429D63-C011-43F3-8AD6-80C60F7E00C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B429D63-C011-43F3-8AD6-80C60F7E00C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B429D63-C011-43F3-8AD6-80C60F7E00C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A77C098-59F1-4459-B884-93FD1262A458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A77C098-59F1-4459-B884-93FD1262A458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A77C098-59F1-4459-B884-93FD1262A458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A77C098-59F1-4459-B884-93FD1262A458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52B972BA-5C50-4609-9CC8-B327BB98CBA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52B972BA-5C50-4609-9CC8-B327BB98CBA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52B972BA-5C50-4609-9CC8-B327BB98CBA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52B972BA-5C50-4609-9CC8-B327BB98CBA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1A44894-9FFB-4487-AC7C-1DB3DF6CEB18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1A44894-9FFB-4487-AC7C-1DB3DF6CEB18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1A44894-9FFB-4487-AC7C-1DB3DF6CEB18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1A44894-9FFB-4487-AC7C-1DB3DF6CEB18}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6D1B2002-A017-44CD-9C2C-F99DC1F32EB4}
+	EndGlobalSection
+EndGlobal
