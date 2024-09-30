@@ -76,8 +76,15 @@ namespace UberSystem.Infrastructure
 
             if (saveChanges)
             {
-                await DbContext.SaveChangesAsync();
-            }
+				try
+				{
+					await DbContext.SaveChangesAsync();
+				}
+				catch (DbUpdateException)
+				{
+                    throw;
+				}
+			}
         }
  
         public async Task InsertRangeAsync(IEnumerable<T> entities, bool saveChanges = true)
@@ -91,9 +98,10 @@ namespace UberSystem.Infrastructure
         }
 
         public async Task UpdateAsync(T entity, bool saveChanges = true)
-        {
-            DbContext.Update(entity);
-            if (saveChanges)
+		{
+			DbContext.Attach(entity); // Attach the entity to the context
+			DbContext.Entry(entity).State = EntityState.Modified;
+			if (saveChanges)
             {
                 await DbContext.SaveChangesAsync();
             }

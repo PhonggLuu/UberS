@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using UberSystem.Domain.Entities;
 using UberSystem.Dto.Requests;
+using UberSystem.Dto.Responses;
 using UberSytem.Dto.Requests;
 using UberSytem.Dto.Responses;
 
@@ -29,6 +30,8 @@ namespace UberSytem.Dto
 		            opt.Condition(src => !string.IsNullOrEmpty(src.UserName)))
 	            .ForMember(dest => dest.Password, opt =>
 		            opt.Condition(src => !string.IsNullOrEmpty(src.Password)));
+            CreateMap<Driver, DriverResponse>();
+            CreateMap<TripRequest, Trip>();
 		}
 	}
 }

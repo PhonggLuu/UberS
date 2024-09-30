@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using UberSystem.Domain.Enums;
 
 namespace UberSystem.Domain.Entities;
 
@@ -16,6 +17,7 @@ public partial class Driver
     public double? LocationLongitude { get; set; }
 
     public byte[] CreateAt { get; set; } = null!;
+    public Status Status { get; set; }
 
     public long? UserId { get; set; }
 

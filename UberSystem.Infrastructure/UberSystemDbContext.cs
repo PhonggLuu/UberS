@@ -28,6 +28,7 @@ public partial class UberSystemDbContext : DbContext
     public virtual DbSet<Trip> Trips { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Locate> Locates { get; set; }
 
     private string GetConnectionString()
     {
@@ -108,6 +109,7 @@ public partial class UberSystemDbContext : DbContext
                 .HasColumnName("dob");
             entity.Property(e => e.LocationLatitude).HasColumnName("locationLatitude");
             entity.Property(e => e.LocationLongitude).HasColumnName("locationLongitude");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("userId ");
 
             entity.HasOne(d => d.Cab).WithMany(p => p.Drivers)
@@ -237,7 +239,45 @@ public partial class UberSystemDbContext : DbContext
                 .HasColumnName("userName");
         });
 
-        OnModelCreatingPartial(modelBuilder);
+		modelBuilder.Entity<Locate>(entity =>
+		{
+			entity.HasKey(e => e.Id).HasName("PK_Locates");
+			entity.ToTable("locates");
+            entity.Property<int>("Id")
+                .HasColumnName("id");
+            entity.Property(e => e.StartLatitude)
+				.HasColumnName("startLatitude");
+			entity.Property(e => e.StartLongitude)
+				.HasColumnName("startLongitude");
+			entity.Property(e => e.TempLatitude)
+				.HasColumnName("tempLatitude");
+			entity.Property(e => e.TempLongitude)
+				.HasColumnName("tempLongitude");
+			entity.Property(e => e.EndLatitude)
+				.HasColumnName("endLatitude");
+			entity.Property(e => e.EndLongitude)
+				.HasColumnName("endLongitude");
+			entity.Property(e => e.StartAddress)
+				.IsUnicode(true)
+				.HasColumnName("startAddress");
+			entity.Property(e => e.TempAddress)
+				.IsUnicode(true)
+				.HasColumnName("tempAddress");
+			entity.Property(e => e.EndAddress)
+				.IsUnicode(true)
+				.HasColumnName("endAddress");
+			entity.Property(e => e.StartWard)
+				.IsUnicode(true)
+				.HasColumnName("startWard");
+			entity.Property(e => e.TempWard)
+				.IsUnicode(true)
+				.HasColumnName("tempWard");
+			entity.Property(e => e.EndWard)
+				.IsUnicode(true)
+				.HasColumnName("endWard");
+		});
+
+		OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

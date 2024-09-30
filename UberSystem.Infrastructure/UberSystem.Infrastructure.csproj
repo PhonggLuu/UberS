@@ -12,5 +12,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\UberSystem.Domain\UberSystem.Domain.csproj" />
+		<ProjectReference Include="..\UberSystem.Dto\UberSystem.Dto.csproj" />
 	</ItemGroup>
 </Project>

@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UberSystem.Service", "UberS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UberSystem.Dto", "UberSystem.Dto\UberSystem.Dto.csproj", "{6A77C098-59F1-4459-B884-93FD1262A458}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UberSystem.Api.Customer", "UberSystem.Api.Customer\UberSystem.Api.Customer.csproj", "{52B972BA-5C50-4609-9CC8-B327BB98CBA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UberSystem.Api.Customer", "UberSystem.Api.Customer\UberSystem.Api.Customer.csproj", "{52B972BA-5C50-4609-9CC8-B327BB98CBA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UberSystem.Api.Driver", "UberSystem.Api.Driver\UberSystem.Api.Driver.csproj", "{E1A44894-9FFB-4487-AC7C-1DB3DF6CEB18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UberSystem.Api.Driver", "UberSystem.Api.Driver\UberSystem.Api.Driver.csproj", "{E1A44894-9FFB-4487-AC7C-1DB3DF6CEB18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateData", "GenerateData\GenerateData.csproj", "{4E81D44A-2280-42F1-9287-D4C99B145C7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{E1A44894-9FFB-4487-AC7C-1DB3DF6CEB18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1A44894-9FFB-4487-AC7C-1DB3DF6CEB18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1A44894-9FFB-4487-AC7C-1DB3DF6CEB18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E81D44A-2280-42F1-9287-D4C99B145C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E81D44A-2280-42F1-9287-D4C99B145C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E81D44A-2280-42F1-9287-D4C99B145C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E81D44A-2280-42F1-9287-D4C99B145C7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

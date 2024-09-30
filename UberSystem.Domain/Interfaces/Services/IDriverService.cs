@@ -1,8 +1,12 @@
-﻿namespace UberSystem.Domain.Interfaces.Services
+﻿using UberSystem.Domain.Entities;
+using UberSystem.Domain.Enums;
+
+namespace UberSystem.Domain.Interfaces.Services
 {
 	public interface IDriverService
 	{
-		/*void UpdateLocation(string driverId, double latitude, double longitude);
-		IEnumerable<DriverDto> GetAvailableDrivers(string pickupLocation, double radius);*/
+		Task<Driver?> GetDriversHighRating(double pickUplatitude, double pickUplongitude);
+		Task GenerateDriverData();
+		Task UpdateStatus(long driverId, long customerId, long? paymentId, string? status1, string pickUpAddress, string pickUpWard, string dropOffAddress, string dropOffWard, Status status2);
 	}
 }

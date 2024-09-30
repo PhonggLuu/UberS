@@ -80,5 +80,5 @@ namespace UberSystem.Domain.Interfaces
         Task<T?> GetAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
 
         IQueryable<T> GetAll();
-    }
+	}
 }

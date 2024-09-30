@@ -2,8 +2,8 @@
 {
 	public enum Status
 	{
-		ONTRIP,
+		FREE,
+		ACCEPTED,
 		INPROGRESS,
-		DONE,
 	}
 }

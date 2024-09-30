@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\UberSystem.Domain\UberSystem.Domain.csproj" />
 		<ProjectReference Include="..\UberSystem.Dto\UberSystem.Dto.csproj" />
+		<ProjectReference Include="..\UberSystem.Infrastructure\UberSystem.Infrastructure.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="MailKit" Version="4.7.1.1" />

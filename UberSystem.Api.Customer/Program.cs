@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using UberSystem.Domain.Interfaces.Services;
+﻿using Microsoft.EntityFrameworkCore;
 using UberSystem.Domain.Interfaces;
+using UberSystem.Domain.Interfaces.Services;
 using UberSystem.Infrastructure;
 using UberSystem.Service;
 using UberSytem.Dto;
@@ -9,7 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+	options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,7 +29,6 @@ builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddScoped<ILocateService, LocateService>();
 builder.Services.AddScoped<ITripService, TripService>();
 builder.Services.AddAutoMapper(typeof(MappingProfileExtension));
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
