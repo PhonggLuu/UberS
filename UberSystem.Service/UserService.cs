@@ -34,12 +34,12 @@ namespace UberSystem.Service
                     await userRepository.InsertAsync(user);
 
                     // add customer or driver into tables
-                    if (user.Role == (int)UserRole.CUSTOMER)
+                    if (user.Role == UserRole.CUSTOMER)
                     {
                         var customer = _mapper.Map<Customer>(user);
                         await customerRepository.InsertAsync(customer);
                     }
-                    else if (user.Role == (int)UserRole.DRIVER)
+                    else if (user.Role == UserRole.DRIVER)
                     {
                         var driver = _mapper.Map<Driver>(user);
                         await driverRepository.InsertAsync(driver);
@@ -64,12 +64,12 @@ namespace UberSystem.Service
             return await _unitOfWork.Repository<User>().FindAsync(id);
         }
 
-        public async Task<User> FindByEmail(string email)
+        public async Task<User?> FindByEmail(string email)
         {
             return await _unitOfWork.Repository<User>().GetAsync(u => u.Email == email);
 		}
 
-		public async Task<User> FindByUsername(string username)
+		public async Task<User?> FindByUsername(string username)
 		{
 			return await _unitOfWork.Repository<User>().GetAsync(u => u.UserName == username);
 		}

@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 using UberSystem.Domain.Entities;
+using UberSystem.Domain.Enums;
 using UberSystem.Domain.Interfaces.Services;
 using UberSystem.Dto.Requests;
 using UberSystem.Service;
+using UberSytem.Dto;
 using UberSytem.Dto.Requests;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace Api.Authentication.Controllers
 {
@@ -39,42 +43,26 @@ namespace Api.Authentication.Controllers
 				return BadRequest("Invalid registration details.");
 			}
 
-			var existingUser = await _userService.FindById(request.Id);
-			if (existingUser != null)
-			{
-				return Conflict("Id already exists.");
-			}
-
-			//Kiểm tra xem email đã tồn tại chưa
-			existingUser = await _userService.FindByEmail(request.Email);
+			var existingUser = await _userService.FindByEmail(request.Email);
 			if (existingUser != null)
 			{
 				return Conflict("Email already exists.");
 			}
 
-			var user = _mapper.Map<User>(request);
-
-			/*var user = new User
+			bool isValid = Enum.IsDefined(typeof(UserRole), value: request.Role);
+			if (!isValid)
 			{
-				Id = request.Id,
-				Email = request.Email,
-				UserName = request.UserName,
-				Password = request.Password,
-				Role = (int)request.Role,
-				EmailVerified = false
-			};*/
+				return BadRequest("Invalid role.");
+			}
 
-			var roles = new List<string> { user.Role.ToString() };
+			var user = _mapper.Map<User>(request);
+			user.Id = Helper.GenerateRandomLong();
+			var roles = new List<string> { request.Role.ToString() };
 			var token = _tokenService.GenerateJwtToken(user, roles);
 
 			user.EmailVerificationToken = token;
 
 			await _userService.Add(user);
-
-			// Tạo link xác thực
-			//var verificationLink = $"https://localhost:7012/api/authentication/verify?token={token}";
-			// Gửi email xác thực
-			//await _emailService.SendVerificationEmailAsync(user.Email, verificationLink);
 			await _emailService.SendVerificationEmailAsync(user.Email, token);
 
 			return Ok("Check mail to verify your account.");
@@ -86,14 +74,19 @@ namespace Api.Authentication.Controllers
 		[HttpPost("verify")]
 		public async Task<IActionResult> VerifyEmail(string token)
 		{
-			var user = await _userService.GetByVerificationToken(token);
-			if (user == null)
-			{
-				return BadRequest("Invalid token or user not found.");
+			try { 				
+				var user = await _userService.GetByVerificationToken(token);
+				if (user == null)
+				{
+					return BadRequest("Invalid token or user not found.");
+				}
+				user.EmailVerified = true;
+				await _userService.Update(user);
 			}
-
-			user.EmailVerified = true;
-			await _userService.Update(user);
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
 
 			return Ok("Verify successful.");
 		}

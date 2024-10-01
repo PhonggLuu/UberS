@@ -6,8 +6,6 @@ namespace UberSytem.Dto.Requests
 {
     public class SignupModel
     {
-        public long Id { get; set; }
-
         public string? UserName { get; set; }
         
         [DataType(DataType.EmailAddress)]
