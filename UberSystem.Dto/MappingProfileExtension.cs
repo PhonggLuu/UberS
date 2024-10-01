@@ -32,6 +32,7 @@ namespace UberSytem.Dto
 		            opt.Condition(src => !string.IsNullOrEmpty(src.Password)));
             CreateMap<Driver, DriverResponse>();
             CreateMap<TripRequest, Trip>();
+            CreateMap<RatingRequest, Rating>();
 		}
 	}
 }

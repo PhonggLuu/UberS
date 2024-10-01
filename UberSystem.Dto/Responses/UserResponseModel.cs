@@ -1,4 +1,6 @@
-﻿namespace UberSytem.Dto.Responses
+﻿using UberSystem.Domain.Enums;
+
+namespace UberSytem.Dto.Responses
 {
     public class UserResponseModel
     {
@@ -8,7 +10,7 @@
 
         public string Email { get; set; } = null!;
 
-        public int? Role { get; set; }
+        public UserRole? Role { get; set; }
 
         public string AccessToken { get; set; } = null!;
     }

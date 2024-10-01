@@ -20,6 +20,10 @@ namespace UberSystem.Api.Driver.Controllers
 			_mapper = mapper;
 		}
 
+		/// <summary>
+		/// Cập nhật trạng thái của tài xế
+		/// </summary>
+		/// <returns></returns>
 		[HttpPut]
 		public async Task<IActionResult> UpdateStatus([FromQuery] Status status,
 													[FromBody] TripRequest request)
@@ -32,7 +36,7 @@ namespace UberSystem.Api.Driver.Controllers
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
 			}
-			return Ok();
+			return Ok("Update booking status successfully");
 		}
 	}
 }

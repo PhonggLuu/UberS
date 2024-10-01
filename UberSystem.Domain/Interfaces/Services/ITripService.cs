@@ -10,5 +10,6 @@ namespace UberSystem.Domain.Interfaces.Services
 	public interface ITripService
 	{
 		Task AddNewTrip(Trip trip);
+		Task<Trip> GetTripById(long tripId);
 	}
 }

@@ -34,6 +34,11 @@ namespace UberSystem.Service
 			}
 		}
 
-
+		public async Task<Trip> GetTripById(long tripId)
+		{
+			var tripRepository = _unitOfWork.Repository<Trip>();
+			var trip = await tripRepository.FindAsync(tripId);
+			return trip;
+		}
 	}
 }
