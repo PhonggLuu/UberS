@@ -2,12 +2,13 @@
 using UberSystem.Domain.Entities;
 using UberSystem.Dto.Requests;
 using UberSystem.Dto.Responses;
+using UberSytem.Dto;
 using UberSytem.Dto.Requests;
 using UberSytem.Dto.Responses;
 
-namespace UberSytem.Dto
+namespace UberSytem.Domain
 {
-	public class MappingProfileExtension : Profile
+    public class MappingProfileExtension : Profile
     {
         /// <summary>
         /// Mapping
@@ -31,8 +32,10 @@ namespace UberSytem.Dto
 	            .ForMember(dest => dest.Password, opt =>
 		            opt.Condition(src => !string.IsNullOrEmpty(src.Password)));
             CreateMap<Driver, DriverResponse>();
-            CreateMap<TripRequest, Trip>();
-            CreateMap<RatingRequest, Rating>();
+			CreateMap<Trip, TripResponse>();
+			CreateMap<RatingRequest, Rating>();
+            CreateMap<Rating, RatingResponse>()
+                .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating1));
 		}
 	}
 }

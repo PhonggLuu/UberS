@@ -1,40 +1,39 @@
-﻿using AutoMapper;
+﻿using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
+using AutoMapper;
 using UberSystem.Domain.Entities;
-using UberSystem.Domain.Enums;
 using UberSystem.Domain.Interfaces.Services;
 using UberSystem.Dto.Requests;
 using UberSystem.Service;
-using UberSytem.Dto;
 using UberSytem.Dto.Requests;
-using static OfficeOpenXml.ExcelErrorValue;
+using UberSytem.Dto;
+using Microsoft.AspNetCore.OData.Formatter;
+using UberSystem.Common.Enums;
 
 namespace Api.Authentication.Controllers
 {
-	[Route("api/authentication")]
+	[Route("odata/authentication")]
 	[ApiController]
-	public class AuthController : ControllerBase
+	public class AuthController : ODataController
 	{
 		private readonly IUserService _userService;
 		private readonly TokenService _tokenService;
 		private readonly IEmailService _emailService;
 		private readonly IMapper _mapper;
-		private readonly IConfiguration _configuration;
 
-		public AuthController(IUserService userService, TokenService tokenService, IEmailService emailService, IMapper mapper , IConfiguration configuration)
+		public AuthController(IUserService userService, TokenService tokenService, IEmailService emailService, IMapper mapper)
 		{
 			_userService = userService;
 			_tokenService = tokenService;
 			_emailService = emailService;
 			_mapper = mapper;
-			_configuration = configuration;
 		}
 
 		/// <summary>
-		/// Đăng ký tài khoản sử dụng mới.
+		/// Registers a new account using the provided email.
 		/// </summary>
-		/// <returns></returns>
+		/// <param name="request">The registration request containing user details.</param>
+		/// <returns>A task representing the asynchronous operation, with a result indicating success or failure.</returns>
 		[HttpPost("sign-up")]
 		public async Task<IActionResult> SignUp([FromBody] SignupModel request)
 		{
@@ -49,7 +48,7 @@ namespace Api.Authentication.Controllers
 				return Conflict("Email already exists.");
 			}
 
-			bool isValid = Enum.IsDefined(typeof(UserRole), value: request.Role);
+			bool isValid = Enum.IsDefined(typeof(UserRole), request.Role);
 			if (!isValid)
 			{
 				return BadRequest("Invalid role.");
@@ -67,14 +66,17 @@ namespace Api.Authentication.Controllers
 
 			return Ok("Check mail to verify your account.");
 		}
+
 		/// <summary>
-		/// Xác thực người dùng bằng token
+		/// Verifies the user's email address using the provided verification token.
 		/// </summary>
-		/// <returns>Vai trò của người dùng.</returns>
+		/// <param name="token">The email verification token.</param>
+		/// <returns>A task representing the asynchronous operation, indicating the result of the verification.</returns>
 		[HttpPost("verify")]
 		public async Task<IActionResult> VerifyEmail(string token)
 		{
-			try { 				
+			try
+			{
 				var user = await _userService.GetByVerificationToken(token);
 				if (user == null)
 				{
@@ -90,10 +92,12 @@ namespace Api.Authentication.Controllers
 
 			return Ok("Verify successful.");
 		}
+
 		/// <summary>
-		/// Đăng nhập vào hệ thống
+		/// Signs in the user by validating their email and password.
 		/// </summary>
-		/// <returns>Trạng thái đăng nhập</returns>
+		/// <param name="request">The login request containing email and password.</param>
+		/// <returns>A task representing the asynchronous operation, with a result containing the user's ID, role, and authentication token.</returns>
 		[HttpPost("sign-in")]
 		public async Task<IActionResult> SignIn([FromBody] LoginModel request)
 		{
@@ -118,16 +122,21 @@ namespace Api.Authentication.Controllers
 				return Unauthorized("Email not verified.");
 			}
 
-			return Ok(user.Id);
+			var token = _tokenService.GenerateJwtToken(user, new List<string> { user.Role.ToString() });
+			user.EmailVerificationToken = token;
+			await _userService.Update(user);
+
+			return Ok(new { userId = user.Id, role = user.Role.ToString(), token });
 		}
 
 		/// <summary>
-		/// Cập nhật lại thông tin người dùng
+		/// Updates the user's information based on the provided user ID and update model.
 		/// </summary>
-		/// <returns></returns>
+		/// <param name="id">The ID of the user to be updated.</param>
+		/// <param name="request">The update model containing the new user information.</param>
+		/// <returns>A task representing the asynchronous operation, indicating success or failure of the update.</returns>
 		[HttpPut("update/{id}")]
-		public async Task<IActionResult> Update([FromRoute] long id,
-												[FromBody] UpdateModel request)
+		public async Task<IActionResult> Update([FromODataUri] long id, [FromBody] UpdateModel request)
 		{
 			var user = await _userService.FindById(id);
 			if (user == null)
@@ -136,10 +145,29 @@ namespace Api.Authentication.Controllers
 			}
 
 			_mapper.Map(request, user);
-
 			await _userService.Update(user);
 
 			return Ok("Update successful.");
 		}
+
+		/// <summary>
+		/// Deletes a user account based on the provided user ID.
+		/// </summary>
+		/// <param name="id">The ID of the user to be deleted.</param>
+		/// <returns>A task representing the asynchronous operation, indicating success or failure of the deletion.</returns>
+		[HttpDelete("delete/{id}")]
+		public async Task<IActionResult> Delete([FromODataUri] long id)
+		{
+			var user = await _userService.FindById(id);
+			if (user == null)
+			{
+				return NotFound("User not found.");
+			}
+
+			await _userService.Delete(user);
+
+			return Ok("User deleted successfully.");
+		}
+
 	}
 }

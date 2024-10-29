@@ -42,7 +42,7 @@ public class EmailService : IEmailService
 		// Email body (plain text)
 		message.Body = new TextPart("plain")
 		{
-			Text = $"Please verify your email by clicking on this link: {url}"
+			Text = $"Token: {url}"
 		};
 		await _smtpClient.SendAsync(message);
 	}

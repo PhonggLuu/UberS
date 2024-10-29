@@ -97,14 +97,16 @@ namespace UberSystem.Infrastructure
             }
         }
 
-        public async Task UpdateAsync(T entity, bool saveChanges = true)
+        public async Task<bool> UpdateAsync(T entity, bool saveChanges = true)
 		{
 			DbContext.Attach(entity); // Attach the entity to the context
 			DbContext.Entry(entity).State = EntityState.Modified;
 			if (saveChanges)
             {
-                await DbContext.SaveChangesAsync();
-            }
+                var result = await DbContext.SaveChangesAsync();
+				return result > 0 ? true : false;
+			}
+            return false;
         }
 
         public async Task UpdateRangeAsync(IEnumerable<T> entities, bool saveChanges = true)

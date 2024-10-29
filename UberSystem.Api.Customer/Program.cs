@@ -1,45 +1,52 @@
-﻿using Microsoft.EntityFrameworkCore;
-using UberSystem.Domain.Interfaces;
-using UberSystem.Domain.Interfaces.Services;
-using UberSystem.Infrastructure;
-using UberSystem.Service;
-using UberSytem.Dto;
+﻿using Microsoft.AspNetCore.OData;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
+using UberSystem.Api.Customer.Extensions;
+using UberSystem.Domain.Entities;
+using UberSystem.Service.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
 	options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-});
+})
+.AddOData(opt => opt
+		.EnableQueryFeatures()
+		.AddRouteComponents("odata", GetEdmModel()));
+	
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connectionString = builder.Configuration.GetConnectionString("Default");
 var configuration = builder.Configuration;
-builder.Services.AddDbContext<UberSystemDbContext>(options =>
-	options.UseSqlServer(connectionString)); // Adjust as needed
-builder.Services.AddScoped<Func<UberSystemDbContext>>(provider => () => provider.GetService<UberSystemDbContext>());
-builder.Services.AddScoped<DbFactory>(); // Ensure the correct lifetime
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IDriverService, DriverService>();
-builder.Services.AddScoped<IRatingService, RatingService>();
-builder.Services.AddScoped<ILocateService, LocateService>();
-builder.Services.AddScoped<ITripService, TripService>();
-builder.Services.AddAutoMapper(typeof(MappingProfileExtension));
+builder.Services.AddDatabase(configuration);
 var app = builder.Build();
+app.UseMiddleware<AddBearerMiddleware>();
+app.UseRouting();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
-	app.UseSwaggerUI();
+	app.UseSwaggerUI(/*c =>
+	{
+		c.SwaggerEndpoint("/swagger/v1/swagger.json", "Uber System API V1");
+		c.RoutePrefix = string.Empty; // Đặt Swagger UI ở gốc
+	}*/);
 }
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+static IEdmModel GetEdmModel()
+{
+	var builder = new ODataConventionModelBuilder();
+	// Register your entity sets here
+	builder.EntitySet<User>("Users");
+	return builder.GetEdmModel();
+}

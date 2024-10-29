@@ -1,12 +1,19 @@
 using Api.Authentication.Extensions;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using System.Reflection;
+using UberSystem.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers()
+	.AddOData(opt => opt
+		.EnableQueryFeatures()
+		.AddRouteComponents("odata", GetEdmModel()));
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
@@ -27,29 +34,43 @@ builder.Services.AddSwaggerGen(opt =>
 			Url = new Uri("https://lms-hcmuni.fpt.edu.vn/course/view.php?id=2110")
 		}
 	});
+
 	// Set the comments path for the Swagger JSON and UI.
 	var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
 	opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
+
+// Database connection and Dependency Injection
 var connectionString = builder.Configuration.GetConnectionString("Default");
 var configuration = builder.Configuration;
-//DI services
 builder.Services.AddDatabase(configuration).AddServices(configuration);
 
 var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+app.UseRouting();
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+	endpoints.MapControllers();
+});
 
 app.Run();
+
+static IEdmModel GetEdmModel()
+{
+	var builder = new ODataConventionModelBuilder();
+	// Register your entity sets here
+	builder.EntitySet<User>("Users");
+	return builder.GetEdmModel();
+}

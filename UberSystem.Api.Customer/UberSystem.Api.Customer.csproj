@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.5" />
+	  <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
+	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	  <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.8.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +20,7 @@
     <ProjectReference Include="..\UberSystem.Dto\UberSystem.Dto.csproj" />
     <ProjectReference Include="..\UberSystem.Infrastructure\UberSystem.Infrastructure.csproj" />
     <ProjectReference Include="..\UberSystem.Service\UberSystem.Service.csproj" />
+	<ProjectReference Include="..\UberSystem.Common\UberSystem.Common.csproj" />
   </ItemGroup>
 
 </Project>

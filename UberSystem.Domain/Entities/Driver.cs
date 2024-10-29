@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using UberSystem.Domain.Enums;
+using UberSystem.Common.Enums;
 
 namespace UberSystem.Domain.Entities;
 

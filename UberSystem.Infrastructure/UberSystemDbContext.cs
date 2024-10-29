@@ -198,7 +198,6 @@ public partial class UberSystemDbContext : DbContext
             entity.Property(e => e.SourceLatitude).HasColumnName("sourceLatitude");
             entity.Property(e => e.SourceLongitude).HasColumnName("sourceLongitude");
             entity.Property(e => e.Status)
-                .HasMaxLength(1)
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("status");

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using UberSystem.Domain.Enums;
+using UberSystem.Common.Enums;
 
 namespace UberSystem.Domain.Entities;
 
@@ -7,7 +7,7 @@ public partial class User
 {
     public long Id { get; set; }
 
-    public UserRole? Role { get; set; }
+    public UserRole Role { get; set; }
 
     public string? UserName { get; set; }
 

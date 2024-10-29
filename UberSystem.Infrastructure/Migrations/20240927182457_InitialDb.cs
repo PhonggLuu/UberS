@@ -110,7 +110,7 @@ namespace UberSystem.Infrastructure.Migrations
                     customerId = table.Column<long>(type: "bigint", nullable: true),
                     driverId = table.Column<long>(type: "bigint", nullable: true),
                     paymentId = table.Column<long>(type: "bigint", nullable: true),
-                    status = table.Column<string>(type: "char(1)", unicode: false, fixedLength: true, maxLength: 1, nullable: true),
+                    status = table.Column<string>(type: "char(1)", unicode: false, fixedLength: true, nullable: true),
                     sourceLatitude = table.Column<double>(type: "float", nullable: true),
                     sourceLongitude = table.Column<double>(type: "float", nullable: true),
                     destinationLatitude = table.Column<double>(type: "float", nullable: true),

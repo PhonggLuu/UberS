@@ -40,5 +40,12 @@ namespace UberSystem.Service
 			};
 			await ratingRepository.InsertAsync(rating);
 		}
+
+		public async Task<Rating?> GetRatingAsync(long tripId)
+		{
+			var ratingRepository = _unitOfWork.Repository<Rating>();
+			var rating = await ratingRepository.GetAsync(r => r.TripId == tripId);
+			return rating;
+		}
 	}
 }

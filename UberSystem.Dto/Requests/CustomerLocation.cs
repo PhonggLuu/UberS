@@ -1,6 +1,6 @@
 ﻿namespace UberSystem.Dto.Requests
 {
-	public class LocationRequest
+	public class CustomerLocation
 	{
 		public string PickUpAddress { get; set; } = string.Empty;
 		public string PickUpWard { get; set; } = string.Empty;

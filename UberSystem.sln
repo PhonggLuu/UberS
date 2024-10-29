@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UberSystem.Api.Customer", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UberSystem.Api.Driver", "UberSystem.Api.Driver\UberSystem.Api.Driver.csproj", "{E1A44894-9FFB-4487-AC7C-1DB3DF6CEB18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateData", "GenerateData\GenerateData.csproj", "{4E81D44A-2280-42F1-9287-D4C99B145C7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateData", "GenerateData\GenerateData.csproj", "{4E81D44A-2280-42F1-9287-D4C99B145C7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UberSystem.Common", "UberSystem.Common\UberSystem.Common.csproj", "{CCB44609-9C07-439C-A829-B708222A3C18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{4E81D44A-2280-42F1-9287-D4C99B145C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E81D44A-2280-42F1-9287-D4C99B145C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E81D44A-2280-42F1-9287-D4C99B145C7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCB44609-9C07-439C-A829-B708222A3C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCB44609-9C07-439C-A829-B708222A3C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCB44609-9C07-439C-A829-B708222A3C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCB44609-9C07-439C-A829-B708222A3C18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

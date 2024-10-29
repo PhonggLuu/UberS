@@ -1,8 +1,9 @@
 ﻿using UberSystem.Domain.Entities;
-using UberSystem.Domain.Enums;
+using UberSystem.Common.Enums;
 using UberSystem.Domain.Interfaces;
 using UberSystem.Domain.Interfaces.Services;
 using UberSytem.Dto;
+using UberSystem.Dto.Requests;
 
 namespace UberSystem.Service
 {
@@ -30,7 +31,7 @@ namespace UberSystem.Service
 			foreach (var driver in drivers)
 			{
 				double? rating = await _ratingService.CalculateRating(driver.Id);
-				if(rating > maxRating)
+				if(rating > maxRating && driver.Status != Status.TEMPORARILY_LOCKED && driver.Status != Status.OFFLINE)
 				{
 					maxRating = rating.Value;
 					response = driver;
@@ -135,6 +136,17 @@ namespace UberSystem.Service
 				DestinationLongitude = destinationLocate.StartLongitude
 			};
 			await _tripService.AddNewTrip(trip);
+		}
+
+		public async Task UpdateStatus2(long driverId, Status newStatus)
+		{
+
+			var driverRepository = _unitOfWork.Repository<Driver>();
+			var driver = await driverRepository.FindAsync(driverId);
+			if (driver is null)
+				throw new KeyNotFoundException("Driver not found.");
+			driver.Status = newStatus;
+			await driverRepository.UpdateAsync(driver);
 		}
 	}
 }

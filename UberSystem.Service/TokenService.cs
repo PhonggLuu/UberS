@@ -23,7 +23,7 @@ public class TokenService
 		var claims = new List<Claim>
 		{
 			new Claim(ClaimTypes.Name, user.Email),
-			new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+			//new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
 			//new Claim("UserId", user.Id.ToString()),  // Thêm thông tin độc nhất
 		};
 
@@ -40,7 +40,8 @@ public class TokenService
 			signingCredentials: credentials
 		);
 
-		return new JwtSecurityTokenHandler().WriteToken(token);
+		var result = new JwtSecurityTokenHandler().WriteToken(token);
+		return result;
 	}
 
 

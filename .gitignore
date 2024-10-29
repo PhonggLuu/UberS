@@ -12,6 +12,8 @@ UberSystem.Domain/bin/
 UberSystem.Domain/obj/
 UberSystem.Service/bin/
 UberSystem.Service/obj/
+UberSystem.Common/bin/
+UberSystem.Common/obj/
 GenerateData/bin/
 GenerateData/obj/
 .vs/

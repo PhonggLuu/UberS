@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using UberSystem.Domain.Enums;
+using UberSystem.Common.Enums;
 
 namespace UberSytem.Dto.Requests
 {

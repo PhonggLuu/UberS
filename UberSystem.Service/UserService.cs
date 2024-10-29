@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UberSystem.Domain.Entities;
-using UberSystem.Domain.Enums;
+using UberSystem.Common.Enums;
 using UberSystem.Domain.Interfaces;
 using UberSystem.Domain.Interfaces.Services;
 namespace UberSystem.Service
@@ -34,12 +34,12 @@ namespace UberSystem.Service
                     await userRepository.InsertAsync(user);
 
                     // add customer or driver into tables
-                    if (user.Role == UserRole.CUSTOMER)
+                    if (user.Role == UserRole.Customer)
                     {
                         var customer = _mapper.Map<Customer>(user);
                         await customerRepository.InsertAsync(customer);
                     }
-                    else if (user.Role == UserRole.DRIVER)
+                    else if (user.Role == UserRole.Driver)
                     {
                         var driver = _mapper.Map<Driver>(user);
                         await driverRepository.InsertAsync(driver);
@@ -80,7 +80,7 @@ namespace UberSystem.Service
             var userRepository = _unitOfWork.Repository<User>();
             var users = await userRepository.GetAllAsync();
 
-            var customers = users.Where(u => u.Role == (int)UserRole.CUSTOMER);
+            var customers = users.Where(u => u.Role == (int)UserRole.Customer);
             return customers;
         }
 
@@ -138,6 +138,25 @@ namespace UberSystem.Service
                 throw;
             }
         }
-    }
+
+		public async Task Delete(User user)
+		{
+			try
+			{
+				var userRepository = _unitOfWork.Repository<User>();
+				if (user is not null)
+				{
+					await _unitOfWork.BeginTransaction();
+					await userRepository.DeleteAsync(user);
+					await _unitOfWork.CommitTransaction();
+				}
+			}
+			catch (Exception)
+			{
+				await _unitOfWork.RollbackTransaction();
+				throw;
+			}
+		}
+	}
 }
 

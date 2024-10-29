@@ -1,4 +1,4 @@
-﻿using UberSystem.Domain.Enums;
+﻿using UberSystem.Common.Enums;
 
 namespace UberSystem.Dto.Responses
 {

@@ -15,4 +15,9 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\UberSystem.Common\UberSystem.Common.csproj" />
+		<ProjectReference Include="..\UberSystem.Dto\UberSystem.Dto.csproj" />
+	</ItemGroup>
+
 </Project>

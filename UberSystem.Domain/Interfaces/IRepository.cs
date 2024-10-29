@@ -67,7 +67,7 @@ namespace UberSystem.Domain.Interfaces
     	/// <param name="entities"></param>
     	/// <param name="saveChanges"></param>
     	/// <returns></returns>
-        Task UpdateAsync(T entity, bool saveChanges = true);
+        Task<bool> UpdateAsync(T entity, bool saveChanges = true);
 
         /// <summary>
     	/// Update an entity by asynchronous method
