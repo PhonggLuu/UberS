@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Net;
+using System.Numerics;
 using UberSystem.Common.Enums;
 using UberSystem.Domain.Interfaces.Services;
 using UberSystem.Dto.Responses;
@@ -10,7 +11,7 @@ using UberSytem.Dto;
 
 namespace UberSystem.Api.Driver.Controllers
 {
-	[Authorize(Roles = "Driver")]
+	//[Authorize(Roles = "Driver")]
 	[Route("odata/driver")]
 	[ApiController]
 	public class DriverController : ODataController
@@ -29,7 +30,7 @@ namespace UberSystem.Api.Driver.Controllers
 		/// <summary>
 		/// Cập nhật trạng thái của tài xế
 		/// </summary>
-		/// <param name="status">Trạng thái của tài xế</param>
+		/// <param name="status">Driver's status</param>
 		/// <param name="confirmation">Xác nhận đơn hàng</param>
 		/// <param name="request">Thông tin chuyến đi</param>
 		/*[HttpPut("{driverId}")]
@@ -58,17 +59,15 @@ namespace UberSystem.Api.Driver.Controllers
 		}*/
 
 		/// <summary>
-		/// Chấp nhận yêu cầu đặt xe
+		/// Accept the trip
 		/// </summary>
-		/// <param name="tripId">Mã số của chuyến đi</param>
-		/// <param name="status">Trạng thái của tài xế</param>
-		/// <param name="request">Thông tin chuyến đi</param>
+		/// <param name="request">Trip information</param>
 		[HttpPost("accept")]
 		public async Task<IActionResult> AcceptRequest([FromBody] TripResponse request)
 		{
-			await _driverService.UpdateStatus2(request.DriverId, Status.INPROGRESS);
-			var updateResult = await _tripService.UpdateTrip(request.Id, request.DriverId, OrderStatus.INPROGRESS.ToString());
-			var trip = await _tripService.GetTripById(request.Id);
+			await _driverService.UpdateStatus2(long.Parse(request.DriverId), Status.INPROGRESS);
+			var updateResult = await _tripService.UpdateTrip(long.Parse(request.Id), long.Parse(request.DriverId), OrderStatus.INPROGRESS.ToString());
+			var trip = await _tripService.GetTripById(long.Parse(request.Id));
 			if (updateResult)
 			{
 				var response = new ApiResponseModel<TripResponse>
@@ -92,14 +91,14 @@ namespace UberSystem.Api.Driver.Controllers
 		}
 
 		/// <summary>
-		/// Từ chối yêu cầu đặt xe
+		/// Reject the trip
 		/// </summary>
-		/// <param name="request">Thông tin chuyến đi</param>
+		/// <param name="request">Trip information</param>
 		[HttpPost("reject")]
 		public async Task<IActionResult> RejectRequest([FromBody] TripResponse request)
 		{
-			await _driverService.UpdateStatus2(request.DriverId, Status.TEMPORARILY_LOCKED);
-			var trip = await _tripService.GetTripById(request.Id);
+			await _driverService.UpdateStatus2(long.Parse(request.DriverId), Status.TEMPORARILY_LOCKED);
+			var trip = await _tripService.GetTripById(long.Parse(request.Id));
 
 			var response = new ApiResponseModel<TripResponse>
 			{
@@ -111,13 +110,13 @@ namespace UberSystem.Api.Driver.Controllers
 		}
 
 		/// <summary>
-		/// Xác nhận trạng thái của chuyến đi
+		/// Confirm order successful
 		/// </summary>
-		/// <param name="request">Thông tin chuyến đi</param>
+		/// <param name="request">Trip information</param>
 		[HttpPost("done-order")]
 		public async Task<IActionResult> UpdateTripStatus([FromBody] TripResponse request)
 		{
-			var trip = await _tripService.GetTripById(request.Id);
+			var trip = await _tripService.GetTripById(long.Parse(request.Id));
 			if(trip == null)
 			{
 				var tripResponse = new ApiResponseModel<TripResponse>
@@ -128,9 +127,9 @@ namespace UberSystem.Api.Driver.Controllers
 				};
 				return NotFound(tripResponse);
 			}
-			await _driverService.UpdateStatus2(driverId: trip.DriverId.Value, status2: Status.FREE);
-			bool updatedOrder = await _tripService.UpdateTrip(request.Id, trip.DriverId.Value, OrderStatus.COMPLETED.ToString());
-			trip = await _tripService.GetTripById(request.Id);
+			await _driverService.UpdateStatus2(driverId: long.Parse(request.DriverId), status2: Status.FREE);
+			bool updatedOrder = await _tripService.UpdateTrip(long.Parse(request.Id), long.Parse(request.DriverId), OrderStatus.COMPLETED.ToString());
+			trip = await _tripService.GetTripById(long.Parse(request.Id));
 
 			if (updatedOrder)
 			{

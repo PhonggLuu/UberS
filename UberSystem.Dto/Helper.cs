@@ -1,4 +1,6 @@
-﻿namespace UberSytem.Dto
+﻿using Newtonsoft.Json;
+
+namespace UberSytem.Dto
 {
     public class Helper
     {
@@ -16,5 +18,5 @@
 
             return randomLong;
         }
-    }
+	}
 }

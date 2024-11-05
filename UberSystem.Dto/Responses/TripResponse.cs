@@ -1,12 +1,14 @@
-﻿namespace UberSystem.Dto.Responses
+﻿using Newtonsoft.Json;
+using System.Numerics;
+using UberSytem.Dto;
+
+namespace UberSystem.Dto.Responses
 {
     public class TripResponse
     {
-        public long Id { get; set; }
-
-        public long CustomerId { get; set; }
-
-        public long DriverId { get; set; }
+        public string Id { get; set; }
+		public string CustomerId { get; set; }
+		public string DriverId { get; set; }
 
         public long? PaymentId { get; set; }
 

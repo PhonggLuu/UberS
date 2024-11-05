@@ -21,23 +21,32 @@ namespace UberSystem.Service
 			_tripService = tripService;
 			_locateService = locateService;
 		}
-		public async Task<Driver?> GetDriversHighRating(double pickUplatitude, double pickUplongitude)
+		public async Task<List<Driver>> GetDriversHighRating(double pickUplatitude, double pickUplongitude)
 		{
 			IEnumerable<Driver>? drivers = await GetNearestDrivers(pickUplatitude, pickUplongitude);
-			double maxRating = 0;
-			if(drivers is null)
+
+			if (drivers is null)
 				return null;
-			Driver? response = drivers.FirstOrDefault();
+
+			var driverRatings = new List<(Driver Driver, double? Rating)>();
+
 			foreach (var driver in drivers)
 			{
 				double? rating = await _ratingService.CalculateRating(driver.Id);
-				if(rating > maxRating && driver.Status != Status.TEMPORARILY_LOCKED && driver.Status != Status.OFFLINE)
+
+				if (rating >= 4 && driver.Status != Status.TEMPORARILY_LOCKED && driver.Status != Status.OFFLINE)
 				{
-					maxRating = rating.Value;
-					response = driver;
+					driverRatings.Add((driver, rating));
 				}
 			}
-			return response;
+
+			var sortedDrivers = driverRatings.Where(dr => dr.Rating.HasValue)
+											.OrderByDescending(dr => dr.Rating)
+											.Select(dr => dr.Driver)
+											.ToList();
+
+			return sortedDrivers;
+
 		}
 		private async Task<IEnumerable<Driver>?> GetNearestDrivers(double pickUplatitude, double pickUplongitude)
 		{
@@ -49,8 +58,7 @@ namespace UberSystem.Service
 				return null;
 			}
 
-			drivers = drivers
-					.Where(d => d.LocationLatitude.HasValue && d.LocationLongitude.HasValue &&
+			drivers = drivers.Where(d => d.LocationLatitude.HasValue && d.LocationLongitude.HasValue &&
 								GetDistance(d.LocationLatitude.Value, d.LocationLongitude.Value, pickUplatitude, pickUplongitude) <= 2 && d.Status == Status.FREE);
 			return drivers;
 		}
@@ -138,15 +146,19 @@ namespace UberSystem.Service
 			await _tripService.AddNewTrip(trip);
 		}
 
-		public async Task UpdateStatus2(long driverId, Status newStatus)
+		public async Task<bool> UpdateStatus2(long driverId, Status newStatus)
 		{
 
 			var driverRepository = _unitOfWork.Repository<Driver>();
 			var driver = await driverRepository.FindAsync(driverId);
 			if (driver is null)
 				throw new KeyNotFoundException("Driver not found.");
+
+			await _unitOfWork.BeginTransaction();
 			driver.Status = newStatus;
-			await driverRepository.UpdateAsync(driver);
+			var updated = await driverRepository.UpdateAsync(driver);
+			await _unitOfWork.CommitTransaction();
+			return updated;
 		}
 	}
 }

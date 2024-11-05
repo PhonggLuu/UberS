@@ -12,7 +12,7 @@ using UberSytem.Dto;
 namespace UberSystem.Api.Customer.Controllers
 {
 
-    [Authorize(Roles = "Customer")]
+    //[Authorize(Roles = "Customer")]
 	[Route("odata/customer")]
 	[ApiController]
 	public class CustomerController : ODataController
@@ -21,16 +21,14 @@ namespace UberSystem.Api.Customer.Controllers
 		private readonly ILocateService _locateService;
 		private readonly IRatingService _ratingService;
 		private readonly ITripService _tripService;
-		private readonly INotificationService _notificationService;
 		private readonly IMapper _mapper;
 
-		public CustomerController(IDriverService driverService, ILocateService locateService, IRatingService ratingService, ITripService tripService, INotificationService notificationService, IMapper mapper)
+		public CustomerController(IDriverService driverService, ILocateService locateService, IRatingService ratingService, ITripService tripService, IMapper mapper)
 		{
 			_driverService = driverService;
 			_locateService = locateService;
 			_ratingService = ratingService;
 			_tripService = tripService;
-			_notificationService = notificationService;
 			_mapper = mapper;
 		}
 
@@ -43,8 +41,8 @@ namespace UberSystem.Api.Customer.Controllers
 		{
 			// Get the coordinates of the pick-up address
 			var location = await _locateService.GetCoordinates(request.PickUpAddress, request.PickUpWard);
-			var driver = await _driverService.GetDriversHighRating(location.StartLatitude, location.StartLongitude);
-			if (driver == null)
+			var drivers = await _driverService.GetDriversHighRating(location.StartLatitude, location.StartLongitude);
+			if (drivers == null)
 			{
 				return NotFound(new ApiResponseModel<TripResponse> { 
 					StatusCode = System.Net.HttpStatusCode.NotFound, 
@@ -58,15 +56,15 @@ namespace UberSystem.Api.Customer.Controllers
 			var trip = await _tripService.GetCustomerTripPending(customerId);
 			if (trip != null)
 			{
-				trip.DriverId = driver.Id;
-				await _tripService.UpdateTrip(customerId, driver.Id, null);
+				trip.DriverId = drivers[0].Id;
+				await _tripService.UpdateTrip(customerId, drivers[0].Id, null);
 			} else
 			{
 				trip = new Trip
 				{
 					Id = Helper.GenerateRandomLong(),
 					CustomerId = customerId,
-					DriverId = driver.Id,
+					DriverId = drivers[0].Id,
 					SourceLatitude = location.StartLatitude,
 					SourceLongitude = location.StartLongitude,
 					DestinationLatitude = location.EndLatitude,
@@ -76,12 +74,12 @@ namespace UberSystem.Api.Customer.Controllers
 				};
 				await _tripService.AddNewTrip(trip);
 			}
-			var tripRequest = _mapper.Map<TripResponse>(trip);
+			var tripResponse = _mapper.Map<TripResponse>(trip);
 			var response = new ApiResponseModel<TripResponse>
 			{
 				StatusCode = System.Net.HttpStatusCode.OK,
 				Message = "Waiting for driver accept booking.",
-				Data = tripRequest,
+				Data = tripResponse,
 			};
 			return Ok(response);
 			// Tạo trip với trạng thái đang chờ để tài xế có thể nhận đơn.

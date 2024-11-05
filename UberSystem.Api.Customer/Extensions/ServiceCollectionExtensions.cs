@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 using UberSystem.Domain.Interfaces;
 using UberSystem.Domain.Interfaces.Services;
@@ -38,7 +39,6 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<INotificationService, NotificationService>();
 		services.AddScoped<ITripService, TripService>();
 		services.AddAutoMapper(typeof(MappingProfileExtension));
-		services.AddSignalR();
 		//        services.AddIdentity<User, IdentityRole>()
 		//.AddEntityFrameworkStores<UberSystemDbContext>()
 		//.AddDefaultTokenProviders();
@@ -63,7 +63,11 @@ public static class ServiceCollectionExtensions
 				};
 			});
 
-		services.AddAuthorization();
+		//services.AddAuthorization();
+		services.AddAuthorization(options =>
+		{
+			options.AddPolicy("Customer", policy => policy.RequireRole("Customer"));
+		});
 
 		services.AddSwaggerGen(c =>
 		{
@@ -89,6 +93,9 @@ public static class ServiceCollectionExtensions
 						new string[] {}
 					}
 				});
+
+			var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+			c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 		});
 
 		// AutoMapper

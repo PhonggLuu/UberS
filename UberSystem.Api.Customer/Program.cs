@@ -47,6 +47,6 @@ static IEdmModel GetEdmModel()
 {
 	var builder = new ODataConventionModelBuilder();
 	// Register your entity sets here
-	builder.EntitySet<User>("Users");
+	builder.EntitySet<Customer>("Customers");
 	return builder.GetEdmModel();
 }

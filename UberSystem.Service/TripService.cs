@@ -45,8 +45,7 @@ namespace UberSystem.Service
 					await _unitOfWork.BeginTransaction();
 					if(status != null)
 						trip.Status = status;
-					if(driverId > 0)
-						trip.DriverId = driverId;
+					trip.DriverId = driverId;
 					var updated = await tripRepository.UpdateAsync(trip);
 					await _unitOfWork.CommitTransaction();
 					return updated;

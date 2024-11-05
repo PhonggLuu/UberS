@@ -8,6 +8,8 @@ using UberSystem.Domain.Interfaces;
 using UberSystem.Infrastructure;
 using UberSystem.Service;
 using UberSytem.Domain;
+using System.Reflection;
+using Microsoft.AspNetCore.OData;
 
 namespace UberSystem.Api.Driver.Extensions;
 
@@ -37,7 +39,6 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<INotificationService, NotificationService>();
 		services.AddScoped<ITripService, TripService>();
 		services.AddAutoMapper(typeof(MappingProfileExtension));
-		services.AddSignalR();
 		//        services.AddIdentity<User, IdentityRole>()
 		//.AddEntityFrameworkStores<UberSystemDbContext>()
 		//.AddDefaultTokenProviders();
@@ -88,6 +89,9 @@ public static class ServiceCollectionExtensions
 					new string[] {}
 				}
 			});
+
+			var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+			c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 		});
 
 		// AutoMapper

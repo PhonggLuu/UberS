@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Numerics;
 using UberSystem.Domain.Entities;
 using UberSystem.Dto.Requests;
 using UberSystem.Dto.Responses;
@@ -32,7 +33,9 @@ namespace UberSytem.Domain
 	            .ForMember(dest => dest.Password, opt =>
 		            opt.Condition(src => !string.IsNullOrEmpty(src.Password)));
             CreateMap<Driver, DriverResponse>();
-			CreateMap<Trip, TripResponse>();
+			CreateMap<Trip, TripResponse>().ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.CustomerId.ToString()))
+											.ForMember(dest => dest.DriverId, opt => opt.MapFrom(src => src.DriverId.ToString())) 
+                                            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
 			CreateMap<RatingRequest, Rating>();
             CreateMap<Rating, RatingResponse>()
                 .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating1));
