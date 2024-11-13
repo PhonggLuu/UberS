@@ -1,19 +1,28 @@
 ﻿using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using System.Text.Json.Serialization;
 using UberSystem.Api.Customer.Extensions;
 using UberSystem.Domain.Entities;
 using UberSystem.Service.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-	options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-})
-.AddOData(opt => opt
-		.EnableQueryFeatures()
-		.AddRouteComponents("odata", GetEdmModel()));
-	
+
+
+var modelBuilder = new ODataConventionModelBuilder();
+modelBuilder.EntitySet<Customer>("Customers");
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.Never;
+    })
+    .AddOData(
+    options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null).AddRouteComponents(
+        "odata",
+        modelBuilder.GetEdmModel()));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -42,11 +51,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-static IEdmModel GetEdmModel()
-{
-	var builder = new ODataConventionModelBuilder();
-	// Register your entity sets here
-	builder.EntitySet<Customer>("Customers");
-	return builder.GetEdmModel();
-}
